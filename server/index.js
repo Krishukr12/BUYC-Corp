@@ -1,8 +1,10 @@
+// Dotenv configuration
+require("dotenv").config();
+
 // All imports
 const express = require("express");
 const cors = require("cors");
-// Dotenv configuration
-require("dotenv").config();
+const { connection } = require("./config/db");
 
 const app = express();
 
@@ -12,6 +14,14 @@ app.use(cors());
 
 
 
-app.listen(process.env.PORT, () => {
-  console.log("listening on port");
+
+
+
+app.listen(process.env.PORT, async () => {
+  try {
+    await connection;
+    console.log(`listening on port ${process.env.PORT}`);
+  } catch (error) {
+    console.log(error.message);
+  }
 });
