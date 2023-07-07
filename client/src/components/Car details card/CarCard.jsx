@@ -1,4 +1,5 @@
-import React from "react";
+/* eslint-disable react/prop-types */
+
 import {
   Box,
   Flex,
@@ -11,23 +12,8 @@ import {
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const CarCard = ({ car, onEdit, onDelete }) => {
-  const toast = useToast();
 
-  // const handleEdit = () => {
-  //   onEdit(car.id);
-  // };
-
-  // const handleDelete = () => {
-  //   onDelete(car.id);
-  //   toast({
-  //     title: "Car deleted",
-  //     description: "The car listing has been deleted successfully.",
-  //     status: "success",
-  //     duration: 3000,
-  //     isClosable: true,
-  //   });
-  // };
-
+  
   return (
     <Box
       borderWidth="1px"
@@ -47,12 +33,11 @@ const CarCard = ({ car, onEdit, onDelete }) => {
         borderRadius="md"
         boxShadow="lg"
         maxH={"250px"}
-        marginLeft={"5px"}
+        margin="auto"
       />
       <Box mt="2">
         <Text fontSize="xl" fontWeight="bold" mb="2">
-          {/* {car.title} */}
-          Honda city 500
+          {car.title}
         </Text>
         <Text fontWeight="bold" mb="2">
           Specifications:
@@ -64,13 +49,9 @@ const CarCard = ({ car, onEdit, onDelete }) => {
             gridTemplateColumns: "repeat(2,1fr)",
           }}
         >
-          {/* {car.specifications.map((spec, index) => (
+          {car.specifications.map((spec, index) => (
             <li key={index}>{spec}</li>
-          ))} */}
-          <li>Honda city</li>
-          <li>Bajaj Finance</li>
-          <li>Bajaj Finance</li>
-          <li>Bajaj Finance</li>
+          ))}
         </ul>
       </Box>
       <Flex justifyContent="space-evenly" mt={"15px"}>
@@ -90,7 +71,7 @@ const CarCard = ({ car, onEdit, onDelete }) => {
             aria-label="Delete"
             size="sm"
             colorScheme="red"
-            // onClick={handleDelete}
+            onClick={() => onDelete(car._id)}
           />
         </Tooltip>
       </Flex>
