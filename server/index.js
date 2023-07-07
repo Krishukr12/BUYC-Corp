@@ -4,7 +4,8 @@ require("dotenv").config();
 // All imports
 const express = require("express");
 const cors = require("cors");
-const { connection } = require("./config/db");
+const connection = require("./config/db");
+const authRouter = require("./routes/auth.routes");
 
 const app = express();
 
@@ -12,7 +13,12 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.send("<h3>Hi Krishu!</h3>");
+});
 
+// All Routes
+app.use("/user", authRouter);
 
 
 
