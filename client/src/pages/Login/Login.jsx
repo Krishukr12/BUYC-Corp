@@ -14,10 +14,15 @@ import { useState } from "react";
 import useCustomToast from "../../hooks/useCustomToast";
 import API_URL from "../../config/config";
 import axios from "axios";
+import { validateEmail } from "../../utils/validateEmail";
+import { useDispatch } from "react-redux";
+import { hideProgressBar, showProgressBar } from "../../redux/action";
 
 export const Login = () => {
   const [credentials, setCredentials] = useState({});
   const showToast = useCustomToast();
+
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,16 +33,30 @@ export const Login = () => {
   };
 
   const handleLogin = async () => {
+    dispatch(showProgressBar());
+
+    if (!validateEmail(credentials.email)) {
+      showToast("Invalid email address", "warning");
+      dispatch(hideProgressBar());
+      return;
+    }
+
     if (!credentials.email || !credentials.password) {
-      return showToast("Please enter your email and password", "error");
+      showToast("Please enter your email and password", "error");
+      dispatch(hideProgressBar());
+      return;
     }
     try {
       const response = await axios.post(`${API_URL}/user/login`, credentials);
-      console.log(response);
+      showToast(response.data.message, "success");
+      dispatch(hideProgressBar());
+      return;
     } catch (error) {
-      return showToast(error.message, "error");
+      showToast(error.response.data.message, "error");
+      dispatch(hideProgressBar());
     }
   };
+
   return (
     <Flex minH={"90vh"} align={"center"} justify={"center"} bg={"gray.100"}>
       <Box

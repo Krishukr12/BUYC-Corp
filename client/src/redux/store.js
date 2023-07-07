@@ -5,8 +5,9 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import { Reducer } from "./reducer";
+
 const initialState = {
-  products: ["Krishan"],
+  isVisible: false,
 };
 export const store = createStore(
   Reducer,
