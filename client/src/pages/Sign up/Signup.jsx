@@ -16,7 +16,7 @@ import axios from "axios";
 import API_URL from "../../config/config";
 import { useDispatch } from "react-redux";
 import { hideProgressBar, showProgressBar } from "../../redux/action";
-
+import { Redirect } from "react-router-dom";
 export const Signup = () => {
   const [credentials, setCredentials] = useState({});
   const showToast = useCustomToast();
@@ -70,7 +70,7 @@ export const Signup = () => {
         conform_password: "",
       });
       dispatch(hideProgressBar());
-      return;
+      <Redirect to="/login" />;
     } catch (error) {
       showToast(error.response.data.message, "error");
       dispatch(hideProgressBar());
