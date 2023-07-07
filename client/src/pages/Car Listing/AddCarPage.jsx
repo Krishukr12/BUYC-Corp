@@ -8,8 +8,12 @@ import {
   Button,
   Flex,
 } from "@chakra-ui/react";
+
 import { useState } from "react";
 import useCustomToast from "../../hooks/useCustomToast";
+import axios from "axios";
+import API_URL from "../../config/config";
+import { pushLinesToArray } from "../../utils/LinesToArray";
 
 const AddCarPage = () => {
   const [carDetails, setCarDetails] = useState({});
@@ -23,10 +27,25 @@ const AddCarPage = () => {
     });
   };
 
-  const handleCarDetailsPost = () => {
-    if (!carDetails.title || !carDetails.description || !carDetails.imgUrl) {
+  const handleCarDetailsPost = async () => {
+    if (!carDetails.title || !carDetails.specifications || !carDetails.imgUrl) {
       showToast("All fields are required", "error");
       return;
+    }
+    try {
+      const response = await axios.post(`${API_URL}/car/carListings`, {
+        title: carDetails.title,
+        image: carDetails.imgUrl,
+        specifications: pushLinesToArray(carDetails.specifications),
+      });
+      showToast(response.data.message, "success");
+      setCarDetails({
+        title: "",
+        imgUrl: "",
+        specifications: "",
+      });
+    } catch (error) {
+      showToast(error.response.data.message, "error");
     }
   };
 
@@ -65,6 +84,7 @@ const AddCarPage = () => {
               Car Image URL
             </FormLabel>
             <Input
+              value={carDetails.imgUrl}
               name="imgUrl"
               onChange={handleChange}
               type="text"
@@ -76,13 +96,12 @@ const AddCarPage = () => {
             />
           </FormControl>
           <FormControl mt="4">
-            <FormLabel htmlFor="description" fontWeight="bold">
-              Description
-            </FormLabel>
+            <FormLabel fontWeight="bold">Description</FormLabel>
             <Textarea
-              name="description"
+              name="specifications"
+              value={carDetails.specifications}
               onChange={handleChange}
-              placeholder="Enter car description"
+              placeholder="Enter car specification"
               resize="vertical"
               rows={5}
               bg="gray.100"

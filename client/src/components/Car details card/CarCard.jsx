@@ -59,6 +59,7 @@ const CarCard = ({ car, onEdit, onDelete }) => {
         </Text>
         <ul
           style={{
+            marginLeft: "15px",
             display: "grid",
             gridTemplateColumns: "repeat(2,1fr)",
           }}
