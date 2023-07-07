@@ -6,6 +6,7 @@ const express = require("express");
 const cors = require("cors");
 const connection = require("./config/db");
 const authRouter = require("./routes/auth.routes");
+const carRouter = require("./routes/car.routes");
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 
 // All Routes
 app.use("/user", authRouter);
+app.use("/car", carRouter);
 
 //  Middleware to handle error
 app.use((err, req, res, next) => {
