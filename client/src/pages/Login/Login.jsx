@@ -35,21 +35,26 @@ export const Login = () => {
   const handleLogin = async () => {
     dispatch(showProgressBar());
 
+    if (!credentials.email || !credentials.password) {
+      showToast("Please enter your email and password", "error");
+      dispatch(hideProgressBar());
+      return;
+    }
+
     if (!validateEmail(credentials.email)) {
       showToast("Invalid email address", "warning");
       dispatch(hideProgressBar());
       return;
     }
 
-    if (!credentials.email || !credentials.password) {
-      showToast("Please enter your email and password", "error");
-      dispatch(hideProgressBar());
-      return;
-    }
     try {
       const response = await axios.post(`${API_URL}/user/login`, credentials);
       showToast(response.data.message, "success");
       dispatch(hideProgressBar());
+      setCredentials({
+        email: "",
+        password: "",
+      });
       return;
     } catch (error) {
       showToast(error.response.data.message, "error");
@@ -77,11 +82,21 @@ export const Login = () => {
           <form>
             <FormControl id="email" mt={4}>
               <FormLabel>Email address</FormLabel>
-              <Input onChange={handleChange} name="email" type="email" />
+              <Input
+                value={credentials.email}
+                onChange={handleChange}
+                name="email"
+                type="email"
+              />
             </FormControl>
             <FormControl id="password" mt={4}>
               <FormLabel>Password</FormLabel>
-              <Input onChange={handleChange} name="password" type="password" />
+              <Input
+                value={credentials.password}
+                onChange={handleChange}
+                name="password"
+                type="password"
+              />
             </FormControl>
 
             <Button
