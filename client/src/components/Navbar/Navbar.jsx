@@ -30,10 +30,10 @@ export const Navbar = () => {
       </div>
       <div className={classes.auth_link_container}>
         <Link to="/login">
-          <Button>Login</Button>
+          <Button variant="outline">Login</Button>
         </Link>
         <Link to="/signup">
-          <Button>Sign Up</Button>
+          <Button variant="outline">Sign Up</Button>
         </Link>
       </div>
     </div>

@@ -10,7 +10,34 @@ import {
   Text,
 } from "@chakra-ui/react";
 
+import { useState } from "react";
+import useCustomToast from "../../hooks/useCustomToast";
+import API_URL from "../../config/config";
+import axios from "axios";
+
 export const Login = () => {
+  const [credentials, setCredentials] = useState({});
+  const showToast = useCustomToast();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  const handleLogin = async () => {
+    if (!credentials.email || !credentials.password) {
+      return showToast("Please enter your email and password", "error");
+    }
+    try {
+      const response = await axios.post(`${API_URL}/user/login`, credentials);
+      console.log(response);
+    } catch (error) {
+      return showToast(error.message, "error");
+    }
+  };
   return (
     <Flex minH={"90vh"} align={"center"} justify={"center"} bg={"gray.100"}>
       <Box
@@ -31,18 +58,19 @@ export const Login = () => {
           <form>
             <FormControl id="email" mt={4}>
               <FormLabel>Email address</FormLabel>
-              <Input type="email" />
+              <Input onChange={handleChange} name="email" type="email" />
             </FormControl>
             <FormControl id="password" mt={4}>
               <FormLabel>Password</FormLabel>
-              <Input type="password" />
+              <Input onChange={handleChange} name="password" type="password" />
             </FormControl>
+
             <Button
+              onClick={handleLogin}
               colorScheme="blue"
               size="lg"
               mt={8}
               w={"full"}
-              type="submit"
             >
               Sign in
             </Button>
