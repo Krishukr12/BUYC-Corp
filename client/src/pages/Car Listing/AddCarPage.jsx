@@ -14,10 +14,12 @@ import useCustomToast from "../../hooks/useCustomToast";
 import axios from "axios";
 import API_URL from "../../config/config";
 import { pushLinesToArray } from "../../utils/LinesToArray";
-
+import { useDispatch } from "react-redux";
+import { hideProgressBar, showProgressBar } from "../../redux/action";
 const AddCarPage = () => {
   const [carDetails, setCarDetails] = useState({});
   const showToast = useCustomToast();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,8 +30,10 @@ const AddCarPage = () => {
   };
 
   const handleCarDetailsPost = async () => {
+    dispatch(showProgressBar());
     if (!carDetails.title || !carDetails.specifications || !carDetails.imgUrl) {
       showToast("All fields are required", "error");
+      dispatch(hideProgressBar());
       return;
     }
     try {
@@ -44,7 +48,9 @@ const AddCarPage = () => {
         imgUrl: "",
         specifications: "",
       });
+      dispatch(hideProgressBar());
     } catch (error) {
+      dispatch(hideProgressBar());
       showToast(error.response.data.message, "error");
     }
   };
