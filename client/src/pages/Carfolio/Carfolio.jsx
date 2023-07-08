@@ -16,6 +16,7 @@ const Carfolio = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getCarData();
   }, []);

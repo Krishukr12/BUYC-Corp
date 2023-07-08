@@ -1,19 +1,9 @@
 /* eslint-disable react/prop-types */
 
-import {
-  Box,
-  Flex,
-  Image,
-  Text,
-  IconButton,
-  Tooltip,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, Text, IconButton, Tooltip } from "@chakra-ui/react";
 import { EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 const CarCard = ({ car, onEdit, onDelete }) => {
-
-  
   return (
     <Box
       borderWidth="1px"
